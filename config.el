@@ -40,6 +40,7 @@
     (disable-theme current-theme)
     (message "Theme: %s" next-theme)
     (setq cjc-theme-index next-index)
+    (setq doom-theme next-theme)
     (condition-case nil
         (enable-theme next-theme)
       (error (load-theme next-theme))))

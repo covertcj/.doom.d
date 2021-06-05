@@ -27,21 +27,38 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-challenger-deep)
+(setq cjc-theme-list '(doom-challenger-deep doom-solarized-light))
+(setq cjc-theme-index 0)
+(setq doom-theme (car cjc-theme-list))
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(defun cjc-toggle-themes ()
+  "Switches between a list of themes"
+  (interactive)
+  (let* ((current-theme (nth cjc-theme-index cjc-theme-list))
+         (next-index (mod (+ cjc-theme-index 1) (length cjc-theme-list)))
+         (next-theme (nth next-index cjc-theme-list)))
+    (disable-theme current-theme)
+    (message "Theme: %s" next-theme)
+    (setq cjc-theme-index next-index)
+    (condition-case nil
+        (enable-theme next-theme)
+      (error (load-theme next-theme))))
+  )
+
+(map! :leader
+      :desc "Change Theme"
+      "t t" #'cjc-toggle-themes)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 (setq scroll-margin 10)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (setq cjc-notes-dir "~/notes/")
 (setq cjc-notes-index (concat cjc-notes-dir "000Index.org"))
+(setq org-directory cjc-notes-dir)
 (setq org-roam-directory cjc-notes-dir)
 (setq deft-directory cjc-notes-dir)
 (setq deft-extensions '("org"))

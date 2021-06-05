@@ -81,6 +81,11 @@
       :desc "Open Org Index File"
       "o n" #'cjc-org-edit-index)
 
+(defun cjc-all-term-mode-hook ()
+  (setq scroll-margin 0))
+(add-hook 'eshell-mode-hook 'cjc-all-term-mode-hook)
+;; TODO verify this works on macos
+(add-hook 'vterm-mode-hook 'cjc-all-term-mode-hook)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
